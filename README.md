@@ -22,9 +22,9 @@ Download the project into the folder you want and install the dependencies (only
 You can now start the backend server by executing:
 ```npm start```
 Now you can open an internet browser like Chrome or Firefox and open one of the following pages:  
-* http://localhost:8089/play_video_segments_over_websockets
-* http://localhost:8089/play_video_segments_over_http
-* http://localhost:8089/play_video_file
+* `http://localhost:8089/play_video_segments_over_websockets`
+* `http://localhost:8089/play_video_segments_over_http`
+* `http://localhost:8089/play_video_file`
 
 
 
@@ -56,9 +56,10 @@ It then plays the mp4 segments (starting the playback even when the downloading 
 #### play_video_segments_over_http
 This sub-project was created by me, just to test some features.
 You can (or not) specify the stream you want to play using one of the following urls in the browser: <br />
-`http://localhost:8089/play_video_segments_over_http`<br />
-`http://localhost:8089/play_video_segments_over_http?id=37`<br />
-`http://localhost:8089/play_video_segments_over_http?id=52`<br />
+* `http://localhost:8089/play_video_segments_over_http`
+* `http://localhost:8089/play_video_segments_over_http?id=37`
+* `http://localhost:8089/play_video_segments_over_http?id=52`
+
 The media content is segmentated on the server side. <br />
 DASH media segments are pre-generated using MP4BOX for all the streams we want to serve. <br />
 We have segments for the video-only track, and segments for the audio-only track. <br />
@@ -69,9 +70,10 @@ Then we can start downloading the segments at any position we want (it does NOT 
 #### play_video_segments_over_websockets
 This is the important sub-project.
 You can (or not) specify the stream you want to play using one of the following urls in the browser:
-`http://localhost:8089/play_video_segments_over_websockets`<br />
-`http://localhost:8089/play_video_segments_over_websockets?id=37`<br />
-`http://localhost:8089/play_video_segments_over_websockets?id=52`<br />
+* `http://localhost:8089/play_video_segments_over_websockets`
+* `http://localhost:8089/play_video_segments_over_websockets?id=37`
+* `http://localhost:8089/play_video_segments_over_websockets?id=52`
+
 The media content is segmentated on the server side. <br />
 DASH media segments are pre-generated using MP4BOX for all the streams we want to serve. <br />
 We have segments for the video-only track, and segments for the audio-only track. <br />
@@ -79,6 +81,7 @@ On the client side the segments are downloaded sequentially over websockets. <br
 The initialization segment is ALWAYS downloaded first. <br />
 Then the player may receive segments from any position the stream is currently playing at. <br />
 Segments are encapsulated in frames according to the following spec:
+
 ---  
 ##### Media Stream Management Header
 **Frame Sequence Number**
@@ -108,6 +111,7 @@ Values are as follows:
 ---
 ##### Data block
 The data block is only appended when **Frame Type** is "D"
+
 ---
 The websocket data is served from the route:
 ```ws://localhost:8090/?type=sink&id=[id]```
