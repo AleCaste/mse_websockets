@@ -74,50 +74,6 @@ server.listen(PORT_HTTP, (err) => {
 
 // Media server (over websockets)
 // ==============================
-/*
-   We will create a 'streams' object with the following structure:
-     streams{streamId}
-       id
-       segmentsDurationMs   // The following prop is the approx average duration of the segments. It should be the same value as the one in the -dash arg used by MP4Box when the dash segments where generated at the server side
-       asyncIdStreaming     // This is the id for the setInterval that will be sending the segments periodically to all clients. When streaming starts, this will have a value other than null. If streaming is stopped/finished, this will be null
-       tracks{trackId}
-         id
-         codec
-         kind
-         type
-         language
-         name
-         iSegmentFirst
-         iSegmentLast
-         iSegmentSent       // The i of the last segment that has been sent to the clients
-       clients[]
-         ws
-         initializationSegmentSent
-         
-       
-   Steps to take:
-   . Open media file for stream 1
-   . Use mp4box to generate DASH segments for audio and video
-   . Pre-fill the 
-   . Store the segments in the segments array of the streams map:
-       streams[streamId].tracks[0].segments[]   (track 0 we will use for video)
-       streams[streamId].tracks[1].segments[]   (track 1 we will use for audio)
-   . The tracks array contains a list of track maps. A track map has properties like: { id, codec, kind, type, language, name, segments[], iSegmentSent }
-   . We are now ready to listen to websocket clients
-   . We start sending data through the websocket to all clients. We do it periodically every X ms. In the setInterval funcion:
-     . For each stream:
-       . If there are no clients connected to that stream id, we rewind the tracks associated to that stream to the 1st segment! The iSegmentSent prop is set to null in all tracks.
-       . If there are clients connected to that stream id:
-         . We increase the stream.track.iSegmentSent by 1 of all tracks (if it is null we make it 0)
-         . For each track:
-           . If stream.track.iSegmentSent is bigger than the number of segments for that track, we do NOT send any segment to the clients, and set the iSegmentSent to null
-           . ... otherwise we send a frame composed by:  [media stream management header/data]+[data buffer]   and increase the ntracksSent in 1
-         . If ntracksSent is 0, then we send a  [media stream management header/close]  frame
-   . Now, if a new client connects to the websocket server:
-     . We check if the stream id exists. If it does we add it to the streams[streamId].clients[] array
-   . If a new client disconnects from the websocket server, we remove it from the streams[streamId].clients[] array
-
-*/
 var wss = new WebSocket.Server({ port:PORT_WSS });
 console.log(`[wss] - Wss server is listening on: ws://localhost:${PORT_WSS}`);
 function noop() {}
@@ -156,6 +112,46 @@ const interval = setInterval(()=> {
 // When a stream reaches the end, the streaming is stopped.
 // If the streaming for a particular stream is stopped and a new client subscribes to it, streaming will start over again.
 // If the streaming for a particular stream is running and a new client subscribes to it, streaming will keep going on from current playback position.
+/* NOTES:
+
+   We will create a 'streams' object with the following structure:
+     streams{streamId}
+       id
+       segmentsDurationMs   // The following prop is the approx average duration of the segments. It should be the same value as the one in the -dash arg used by MP4Box when the dash segments where generated at the server side
+       asyncIdStreaming     // This is the id for the setInterval that will be sending the segments periodically to all clients. When streaming starts, this will have a value other than null. If streaming is stopped/finished, this will be null
+       tracks{trackId}
+         id
+         codec
+         kind
+         type
+         language
+         name
+         iSegmentFirst
+         iSegmentLast
+         iSegmentSent       // The i of the last segment that has been sent to the clients
+       clients[]
+         ws
+         initializationSegmentSent
+         
+       
+   Steps to take:
+   . Before running the project, use mp4box to generate DASH segments for audio and video of the stream we want to serve.
+   . Then we enter the stream details here when initing the streamsManager
+   . It's important to fill-up the tracks array of the stream. This array contains a list of track objects. A track object has properties like: { id, codec, kind, type, language, name, iSegmentFirst, iSegmentLast, iSegmentSent }
+   . We are now ready to listen to websocket clients
+   . We start sending data through the websocket to all clients. We do it periodically every X ms (where X is the dash param used by mp4box). In the setInterval funcion:
+     . For each stream:
+       . If there are no clients connected to that stream id, we rewind the tracks associated to that stream to the 1st segment! The iSegmentSent prop is set to null in all tracks.
+       . If there are clients connected to that stream id:
+         . We increase the stream.track.iSegmentSent by 1 of all tracks (if it is null we make it 0)
+         . For each track:
+           . If stream.track.iSegmentSent is bigger than the number of segments for that track, we do NOT send any segment to the clients, and set the iSegmentSent to null
+           . ... otherwise we send a frame composed by:  [media stream management header/data]+[data buffer]   and increase the ntracksSent in 1
+         . If ntracksSent is 0, then we send a  [media stream management header/close]  frame
+   . Now, if a new client connects to the websocket server:
+     . We check if the stream id exists. If it does we add it to the streams[streamId].clients[] array
+   . If a new client disconnects from the websocket server, we remove it from the streams[streamId].clients[] array
+*/
 var streamsManager = new StreamsManager(wss, {
   '37': {
     id:37,
