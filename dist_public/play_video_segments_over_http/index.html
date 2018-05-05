@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MSE + DASH + download video segments individually</title>
+  <meta name="description" content="The player downloads the pre-generated DASH video segment files sequentially through http and shows the content (even if you decide to start the playback from a different starting point than the begining)" />
+  <meta name="viewport" content="width=device-width, user-scalable=yes" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />
+  <script type="text/javascript" src="http://download.tsi.telecom-paristech.fr/gpac/mp4box.js/mp4box.all.min.js"></script>
+  <style type="text/css" media="all">
+
+html, body { width:100%;height:100%;margin:0;padding:0; }
+body { position:absolute;overflow-x:hidden;cursor:default;
+background:rgb(72, 72, 72);
+}
+  
+#video_player {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 40em;
+  max-height: 20em;
+  border: 1px solid black;
+  margin: 2em auto;
+  background: rgb(220,220,220);
+  box-shadow: 0 0.25em 0.313em 0 rgba(0,0,0,.14), 0 0.063em 0.625em 0 rgba(0,0,0,.12), 0 0.125em 0.25em -0.063em rgba(0,0,0,.2);
+}
+
+  </style>
+</head>
+<body>
+
+  <video id="video_player" controls="controls" poster="" autoplay="autoplay" src=""></video>
+  
+  <!-- Load a not cacheable js file --><script>document.write('<script src="/play_video_segments_over_http/index.js'+(false?'?'+Math.random():'')+'"><\/script>');</script>
+</body>
+</html>
