@@ -44,7 +44,7 @@ Within it you can find:
 
 ### Sub-projects  
 #### play_video_file
-This sub-project was created by me, just to test some features.
+This sub-project was created by me, just to test some features.<br />
 The media content is segmentated on the client side. <br />
 The player downloads the WHOLE video file. <br />
 But it does not wait for the full download to be finished. <br />
@@ -54,7 +54,7 @@ The client itself segmentates the binary chunks into mp4 segments (as the data k
 It then plays the mp4 segments (starting the playback even when the downloading process has not finished). <br />
 
 #### play_video_segments_over_http
-This sub-project was created by me, just to test some features.
+This sub-project was created by me, just to test some features.<br />
 You can (or not) specify the stream you want to play using one of the following urls in the browser: <br />
 * `http://localhost:8089/play_video_segments_over_http`
 * `http://localhost:8089/play_video_segments_over_http?id=37`
@@ -68,7 +68,7 @@ The initialization segment is ALWAYS downloaded first. <br />
 Then we can start downloading the segments at any position we want (it does NOT necessarily needs to be from the beginning). <br />
 
 #### play_video_segments_over_websockets
-This is the important sub-project.
+This is the important sub-project.<br />
 You can (or not) specify the stream you want to play using one of the following urls in the browser:
 * `http://localhost:8089/play_video_segments_over_websockets`
 * `http://localhost:8089/play_video_segments_over_websockets?id=37`
@@ -113,8 +113,8 @@ Values are as follows:
 The data block is only appended when **Frame Type** is "D"
 
 ---
-The websocket data is served from the route:
-```ws://localhost:8090/?type=sink&id=[id]```
+The websocket data is served from the route:<br />
+`ws://localhost:8090/?type=sink&id=[id]`<br />
 ... where [id] is the stream id we want to play
 
 
