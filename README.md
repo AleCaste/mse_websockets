@@ -55,10 +55,10 @@ It then plays the mp4 segments (starting the playback even when the downloading 
 
 #### play_video_segments_over_http
 This sub-project was created by me, just to test some features.
-You can (or not) specify the stream you want to play using one of the following urls in the browser:
-http://localhost:8089/play_video_segments_over_http
-http://localhost:8089/play_video_segments_over_http?id=37
-http://localhost:8089/play_video_segments_over_http?id=52
+You can (or not) specify the stream you want to play using one of the following urls in the browser: <br />
+`http://localhost:8089/play_video_segments_over_http`<br />
+`http://localhost:8089/play_video_segments_over_http?id=37`<br />
+`http://localhost:8089/play_video_segments_over_http?id=52`<br />
 The media content is segmentated on the server side. <br />
 DASH media segments are pre-generated using MP4BOX for all the streams we want to serve. <br />
 We have segments for the video-only track, and segments for the audio-only track. <br />
@@ -69,9 +69,9 @@ Then we can start downloading the segments at any position we want (it does NOT 
 #### play_video_segments_over_websockets
 This is the important sub-project.
 You can (or not) specify the stream you want to play using one of the following urls in the browser:
-http://localhost:8089/play_video_segments_over_websockets
-http://localhost:8089/play_video_segments_over_websockets?id=37
-http://localhost:8089/play_video_segments_over_websockets?id=52
+`http://localhost:8089/play_video_segments_over_websockets`<br />
+`http://localhost:8089/play_video_segments_over_websockets?id=37`<br />
+`http://localhost:8089/play_video_segments_over_websockets?id=52`<br />
 The media content is segmentated on the server side. <br />
 DASH media segments are pre-generated using MP4BOX for all the streams we want to serve. <br />
 We have segments for the video-only track, and segments for the audio-only track. <br />
