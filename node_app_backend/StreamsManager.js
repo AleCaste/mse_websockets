@@ -17,6 +17,19 @@ const uuidv4 = require('uuid/v4');
 // If the streaming for a particular stream is stopped and a new client subscribes to it, streaming will start over again.
 // If the streaming for a particular stream is running and a new client subscribes to it, streaming will keep going on from current playback position.
 class StreamsManager {
+  /* 
+     Methods:
+     NOTE: methods starting with $ are asynchronous
+     ========
+     constructor(wss, streams)
+     subscribeClientToRequestedStream(ws, req)
+     unsubscribeNonActiveClients(stream)
+     startStreaming(stream)
+     stopStreaming(stream)
+     isStreaming(stream)
+     $getSegmentFromFileSystem(stream, track, iSegment)
+     $buildFrame(stream, track, iSegment, frameType)
+  */
   // ----------------------------------------------------------------------------
   constructor(wss, streams) {
     let t = this;
@@ -90,12 +103,12 @@ class StreamsManager {
                 let frame;
                 if (client.initializationSegmentSent==false) {
                   console.log(`    [streamsManager] - Stream[${stream.id}].Client[${ws.id}].Track[${track.id}].Segment[${track.iSegmentSent}] - Not sending yet!. Let's send the initializationSegment first!`);
-                  frame = await t.buildFrame(stream, track, 0, 'D');
+                  frame = await t.$buildFrame(stream, track, 0, 'D');
                   if (frame!=null)  ws.send(frame);
                   client.initializationSegmentSent = true;
                 }
                 console.log(`    [streamsManager] - Stream[${stream.id}].Client[${ws.id}].Track[${track.id}].Segment[${track.iSegmentSent}] - Sending`);
-                frame = await t.buildFrame(stream, track, track.iSegmentSent, 'D');
+                frame = await t.$buildFrame(stream, track, track.iSegmentSent, 'D');
                 if (frame!=null)  ws.send(frame);
               }());
             });
@@ -124,7 +137,7 @@ class StreamsManager {
     stream.clients.forEach((client)=> {
       (async function() {
         let ws = client.ws;
-        let frame = await t.buildFrame(stream, null, null, 'C');
+        let frame = await t.$buildFrame(stream, null, null, 'C');
         if (frame!=null)  ws.send(frame);
       }());
     });
@@ -139,7 +152,7 @@ class StreamsManager {
   // If 'iSegment' equals 0 the method will send the initialization segment.
   // Otherwise 'iSegment' needs to be an integer that specifies the segment number to get.
   // IMPORTANT! This method returns a Uint8Array (not an ArrayBuffer)
-  async getSegmentFromFileSystem(stream, track, iSegment) {
+  async $getSegmentFromFileSystem(stream, track, iSegment) {
     let t = this;
     if (stream==null || track==null || iSegment==null)  return;
     let fileRoute;
@@ -151,7 +164,7 @@ class StreamsManager {
     return buffer;
   }
   // ----------------------------------------------------------------------------
-  async buildFrame(stream, track, iSegment, frameType) {
+  async $buildFrame(stream, track, iSegment, frameType) {
     let t = this;
     let endianness, buffer, tbuffer, vbuffer, tbufferData, p, v;
     // p stands for Position (in bytes)
@@ -167,7 +180,7 @@ class StreamsManager {
         
       // Get data buffer associated to the specified segment
       if (frameType=='D') {
-        tbufferData = await t.getSegmentFromFileSystem(stream, track, iSegment);
+        tbufferData = await t.$getSegmentFromFileSystem(stream, track, iSegment);
       }
         
       // Frame length in bytes
