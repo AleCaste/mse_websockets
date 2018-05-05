@@ -31,8 +31,8 @@ Next you may open an internet browser like Chrome or Firefox and visit one of th
   
 ### Project folder structure
 
-The backend files are stored in `[project-folder]/node_app_backend`
-The public folder with the files the server delivers to the clients is `[project-folder]/dist_public`
+The backend files are stored in `[project-folder]/node_app_backend`<br />
+The public folder with the files the server delivers to the clients is `[project-folder]/dist_public`<br />
 Within it you can find:
 * The media files `[project-folder]/dist_public/media`
 * The .html pages for all the sub-projects:
