@@ -17,10 +17,10 @@
   
 ### Running the project
 
-Download the project into the folder you want and install the dependencies (only 2 minor dependencies: `uuid` and `ws`):
-```npm install```  
-You can now start the backend server by executing:
-```npm start```
+Download the project into the folder you want and install the dependencies (only 2 minor dependencies: `uuid` and `ws`):<br />
+`npm install`<br />
+You can now start the backend server by executing:<br />
+`npm start`<br />
 Now you can open an internet browser like Chrome or Firefox and open one of the following pages:  
 * `http://localhost:8089/play_video_segments_over_websockets`
 * `http://localhost:8089/play_video_segments_over_http`
