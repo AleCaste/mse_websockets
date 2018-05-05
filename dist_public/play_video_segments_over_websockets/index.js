@@ -8,6 +8,7 @@
      processOptions(options)
      constructor(options)
      init(options)
+       _initPlayVideoChunksOverWebsockets()
        _initPlayVideoChunksOverHttp()
      _downloadSegment(url, cb, aux)
      reset(cb)
@@ -507,6 +508,11 @@
 
 
 
+  
+  
+  
+  // Ready to go!!!
+  // Let's create a new instance of a MsePlayer and init it with the right parameters for the requested stream
   var getQueryStringParameterByName = function(name, url) {
       if (!url) url = window.location.href;
       name = name.replace(/[\[\]]/g, "\\$&");
