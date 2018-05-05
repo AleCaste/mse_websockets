@@ -42,7 +42,7 @@
         video.addEventListener('timeupdate', function(e) {
           // If the playback has reached the end of the current stream duration, we close the stream (for live streams we should never do this)
           //console.info('[VideoTag] - timeupdate - currentTime:['+video.currentTime+']  duration:['+(d.mse && d.mse.duration)+']');
-          if (d.mse && d.mse.duration-video.currentTime<1 && d.mse.readyState==='open')  {
+          if (d.mse && d.mse.readyState==='open' && d.mse.duration-video.currentTime<1)  {
             console.info('[MediaSourceExtension] - Ending stream');
             d.mse.endOfStream();
           }
@@ -86,6 +86,7 @@
       if (d.src.match(/^wss?:\/\//)!=null) {
         // Websocket-based video stream
         d.feedingMechanism = 'websockets';
+        //t._initPlayVideoChunksOverWebsockets();
       } else {
         // Video file
         d.feedingMechanism = 'http';
@@ -150,6 +151,7 @@
               else                                                   url = `${d.src}.dash.${sb.track.id}.${iSegmentDownload}.m4s`;
               // Now let's download the segment:
               t._downloadSegment(url, function(err, data, aux) {
+                //console.log('  New data received through http...   length:'+data.byteLength+'   type:'+Object.prototype.toString.call(data)+'   url:'+aux.url);
                 if (err!=null)  return;
                 var sb = aux.sb;
                 var trackId = sb.track.id;
@@ -157,7 +159,7 @@
                 sb.pendingSbSegmentsToAppend.push({ trackId:trackId, buffer:data });
                 console.info('[Track#'+trackId+'] - Received new segment. Number of segments remaining still to be appended:['+sb.pendingSbSegmentsToAppend.length+']');
                 sb.updateend(false, false);
-              }, {sb:sb});
+              }, {sb:sb, url:url});
             });
             if (initializationSegmentToBeRetrieved==true) initializationSegmentToBeRetrieved = false;
             else                                          iSegmentDownload++;
@@ -465,3 +467,6 @@
   window.msePlayer.init();
   
 })();
+
+
+

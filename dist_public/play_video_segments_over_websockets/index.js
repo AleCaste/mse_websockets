@@ -42,10 +42,10 @@
         video.addEventListener('timeupdate', function(e) {
           // If the playback has reached the end of the current stream duration, we close the stream (for live streams we should never do this)
           //console.info('[VideoTag] - timeupdate - currentTime:['+video.currentTime+']  duration:['+(d.mse && d.mse.duration)+']');
-          /*if (d.mse && d.mse.readyState==='open' && d.mse.duration-video.currentTime<1)  {
+          if (d.mse && d.mse.readyState==='open' && d.mse.duration-video.currentTime<1)  {
             console.info('[MediaSourceExtension] - Ending stream');
             d.mse.endOfStream();
-          }*/
+          }
         });
         //video.addEventListener('seeking', function(e) {
         //});
@@ -243,7 +243,7 @@
               else                                                   url = `${d.src}.dash.${sb.track.id}.${iSegmentDownload}.m4s`;
               // Now let's download the segment:
               t._downloadSegment(url, function(err, data, aux) {
-                console.log('  New data received through http...   length:'+data.byteLength+'   type:'+Object.prototype.toString.call(data)+'   url:'+aux.url);
+                //console.log('  New data received through http...   length:'+data.byteLength+'   type:'+Object.prototype.toString.call(data)+'   url:'+aux.url);
                 if (err!=null)  return;
                 var sb = aux.sb;
                 var trackId = sb.track.id;
