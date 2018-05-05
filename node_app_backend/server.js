@@ -119,7 +119,7 @@ server.listen(PORT_HTTP, (err) => {
 
 */
 var wss = new WebSocket.Server({ port:PORT_WSS });
-console.log(`[wss] - Wss server is listening on: http://localhost:${PORT_WSS}`);
+console.log(`[wss] - Wss server is listening on: ws://localhost:${PORT_WSS}`);
 function noop() {}
 function heartbeat() { this.isAlive = true; }
 wss.on('connection', (ws, req)=> {
