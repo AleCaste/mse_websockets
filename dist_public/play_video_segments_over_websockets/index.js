@@ -8,8 +8,8 @@
      processOptions(options)
      constructor(options)
      init(options)
-       _initPlayVideoChunksOverWebsockets()
-       _initPlayVideoChunksOverHttp()
+       _initPlayVideoSegmentsOverWebsockets()
+       _initPlayVideoSegmentsOverHttp()
      _downloadSegment(url, cb, aux)
      reset(cb)
        _resetMs(cb)
@@ -87,15 +87,15 @@
       if (d.src.match(/^wss?:\/\//)!=null) {
         // Websocket-based video stream
         d.feedingMechanism = 'websockets';
-        t._initPlayVideoChunksOverWebsockets();
+        t._initPlayVideoSegmentsOverWebsockets();
       } else {
         // Video file
         d.feedingMechanism = 'http';
-        t._initPlayVideoChunksOverHttp();
+        t._initPlayVideoSegmentsOverHttp();
       }
     };
     // ----------------------------------------------------------------------------
-    MsePlayer.prototype._initPlayVideoChunksOverWebsockets = function() {
+    MsePlayer.prototype._initPlayVideoSegmentsOverWebsockets = function() {
       var t = this, d = t.d;
       var video = d.video;
     
@@ -192,7 +192,7 @@
     // and once this is done, it starts downloading the segments in intervals of N milliseconds
     // (both the number of segments to download and this download interval is hard-coded for this demo)
     // (in a production env the player could receive a info frame which could specify these details)
-    MsePlayer.prototype._initPlayVideoChunksOverHttp = function() {
+    MsePlayer.prototype._initPlayVideoSegmentsOverHttp = function() {
       var t = this, d = t.d;
       var video = d.video;
       
