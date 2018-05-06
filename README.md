@@ -11,7 +11,7 @@
 * Tested on Chrome Version 66.0.3359.117, Firefox Developer Edition 61.0b2 which have good MSE support.
 * The backend runs 2 servers:
   1. An http server that serves static files (.html, .js, etc)
-  2. An wss server that serves data through websockets
+  2. A wss server that serves data through websockets
 * The backend is written using ES6 features
 * The frontend is written in ES5 (I could use ES6 features too since if a browser that supports MSE does support ES6 too, but well, just as a proof of concept)
   
@@ -84,9 +84,9 @@ Segments are encapsulated in frames according to the following spec:
 
 ---  
 ##### Media Stream Management Header
-**Frame Sequence Number**
+**Frame Sequence Number**<br />
 An unsigned 32 bit (4 byte) value. The value begins with 1 (zero is invalid), and increments for each frame header/data pair. <br />
-**Frame Type**
+**Frame Type**<br />
 A single 8 bit character value. This value is used to signify the "type" of frame. <br /> 
 Values are as follows:
 ```
@@ -97,7 +97,7 @@ Values are as follows:
 "E" = Error frame.
 "C" = Close frame (request WebSocket close).
 ```
-**Frame Data Type**
+**Frame Data Type**<br />
 A single 8 bit character value. This value is used to signify the "type" of data in the frame. <br />
 Values are as follows:
 ```
@@ -126,7 +126,7 @@ The websocket data is served from the route:<br />
 * So each video segment should include about 60 frames (if video is 30fps). Meaning 2s of video data approx.
 * If a client subscribes to a stream, the streaming process of that stream begins.
 * If additional clients subscribe to that same stream, they will get the content from the point the live stream is currently at.
-* When the live stream reaches its end, a `Close` frame is sent to the clients to tell them that the stream has finished.
+* When the live stream reaches its end, a `Close` frame is sent to the clients to notify them that the stream has finished.
 * Once a stream has stopped, it won't be re-run again until a new client subscribes to it.
 * When this happens the server will start the streaming from the beginning.
-* **NOTE:** The video autoplays just fine from Firefox, but I have not been able to get the autoplay working on Chrome (even when adding the 'muted' attribute to the <video> tag) so I'd need to further investigate on it).
+* **NOTE:** The video autoplays just fine on Firefox, but I have not been able to get the autoplay feature working on Chrome (even when adding the 'muted' attribute to the <video> tag) so I'd need to further investigate this behavior).
